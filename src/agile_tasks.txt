@@ -1,0 +1,20 @@
+,0,1,2
+0,Data Gathering,Yelp API,Complete
+1,Data Gathering,Storage,Complete
+2,Data Gathering,Progress Stats,Complete
+3,Exploritory Data Analysis,Structure,Complete
+4,Exploritory Data Analysis,Summarize,Not Checked Out
+5,Exploritory Data Analysis,Charts,Not Checked Out
+6,Modeling,Vectorize,Not Checked Out
+7,Modeling,Model,Not Checked Out
+8,Modeling,Predict,Not Checked Out
+9,Modeling,Score,Not Checked Out
+10,Deployment,Pickle,Not Checked Out
+11,Deployment,.py Files,Not Checked Out
+12,Deployment,MongoDB,Not Checked Out
+13,Deployment,Templates,Not Checked Out
+14,Deployment,Flask App,Complete
+15,Presentation,Outline,Not Checked Out
+16,Presentation,slides,Checked Out
+17,Presentation,speech,Not Checked Out
+18,Presentation,practice,Not Checked Out
