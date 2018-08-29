@@ -31,10 +31,18 @@ If time allows in the capstone, the concept could be expanded to segment the bus
                 Proximities Counts
                 nearest neighbors
                 Customer Review Averages
-                Natual Language Processing w/ word cloud
+                Natural Language Processing w/ word cloud
                     Star - Word Frequency
+                    Categories
+                        Breakfast
+                        Lunch
+                        Dinner
+                        Desert
                     Classify Restaurants - Kmeans
-
+                        Verify Yelp Categorization
+                            TFIDF Vectorizor
+                            
+                        Create a new
 
     Prediction Collection
         Store data on Prediction results
@@ -49,3 +57,10 @@ If time allows in the capstone, the concept could be expanded to segment the bus
 If the app was productionalized, then the user request could trigger the data analysis and model fitting to return a prediction for the area the user is located.
 
 
+## Agile
+
+### User Stories
+    Pull Yelp Data
+    EDA
+    Supervised Category Classify Model
+    
