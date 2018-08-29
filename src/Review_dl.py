@@ -3,6 +3,7 @@ import pickle
 import time
 from bs4 import BeautifulSoup
 import datetime
+import pymongo
 
 def get_review_ids(soup):
     '''
@@ -42,8 +43,8 @@ def save_data(reviews_dict, business_dict):
         
         print('Data saved Successfully!  Nice Work')
         pass
-        
-def append_review(soup, review_id_list, reviews_dict):
+
+def append_review(bus_id, soup, review_id_list, reviews_dict):
     '''
     Doc Stings
     Convert the request content into a string to extract the data-review-id on the yelp page.
@@ -53,11 +54,16 @@ def append_review(soup, review_id_list, reviews_dict):
     reviews_dict: Dictionary for storing Reviews
     OUTPUT: return the updated dictionary
     '''
+    review_dict = {}
     for review in review_id_list:
         div = soup.find("div", {"data-review-id": review})
         if div!=None:
             if div.find("p").text != '\n            Was this review …?\n    ':
-                reviews_dict[review] = div.find("p").text
+                review_dict['review_id'] = review
+                review_dict['business_id'] = bus_id
+                review_dict['rating'] = div.find('div', {'class': 'i-stars'})['title']
+                review_dict['review'] = div.find("p").text
+                reviews_dict[review] = review_dict
 
     return reviews_dict
 
@@ -82,44 +88,54 @@ class Download_Reviews(object):
         pass
 
     def run_dl(self, number_to_pull):
+        run_status = 'OK'
+
+        #Mongo Client
+        client = pymongo.MongoClient('mongodb://localhost:27017/')
+        db = client.yelp
+        raw_web = db.requests
+
         try:
-            while self.nbr_key < (number_to_pull + self.nbr_key):
+            done_mark = number_to_pull + self.nbr_key
+            while self.nbr_key < done_mark:
+                run_status = 'Runnning'
                 if 'reviews_pulled' not in self.business_dict[self.business_ids[self.nbr_key]].keys():
-                    url = self.business_dict[self.business_ids[self.nbr_key]]['url']
+                    bus_id = self.business_ids[self.nbr_key]
+                    url = self.business_dict[bus_id]['url']
                     r = requests.get(url)
 
                     print('Key:', self.nbr_key)
                     print('Request Status:', r.status_code)
                     if r.status_code == 200:
+                        HTML_dict = {}
+                        HTML_dict[bus_id] = r.content
+                        raw_web.insert_one(HTML_dict)
+
                         time.sleep(45)
                         soup = BeautifulSoup(r.content, "lxml")
-
                         review_ids_list = get_review_ids(soup)
+                        self.reviews_dict = append_review(bus_id, soup, review_ids_list, self.reviews_dict)
+                        self.business_dict[bus_id]['reviews_pulled'] = True
+                        run_status = 'OK'
 
-                        self.reviews_dict = append_review(soup, review_ids_list, self.reviews_dict)
-
-                        self.business_dict[self.business_ids[self.nbr_key]]['reviews_pulled'] = True
-                    
                     if self.ds.closed:
                         self.ds = open('../data/data_scraping.txt', 'a')
                         print('opened data scraping log file.')
                     self.ds.write("{date}\t{key}\t{status}\n".format(date=datetime.datetime.now(), key=self.nbr_key, status=r.status_code))
                     
-                    print(self.business_ids[self.nbr_key] , 'Done', self.business_dict[self.business_ids[self.nbr_key]]['reviews_pulled'])
-                    print(len(self.reviews_dict), 'done')
+                    print(bus_id , 'Done', self.business_dict[bus_id]['reviews_pulled'])
+                    run_status = 'OK'
+                    print(len(self.reviews_dict), run_status)
 
                 self.nbr_key += 1
-                print('Next Key:', self.nbr_key, 'to', (number_to_pull + self.nbr_key))
+                print('Next Key:', self.nbr_key, 'to', done_mark)
             
             print('Batch Done at Key:', self.nbr_key)
-            save_data(self.reviews_dict, self.business_dict)
-            pass
 
         finally:
-            print('Error')
+            if run_status == 'Runnning':
+                print('Error while Running')
             save_data(self.reviews_dict, self.business_dict)
             self.ds.close()
 
         pass
-
-        
