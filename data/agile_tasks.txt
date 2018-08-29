@@ -1,0 +1,20 @@
+swim_lane,task,status
+Data Gathering,Yelp API,Complete
+Data Gathering,Storage,Complete
+Data Gathering,Progress Stats,Complete
+Exploritory Data Analysis,Structure,Complete
+Exploritory Data Analysis,Summarize,Not Checked Out
+Exploritory Data Analysis,Charts,Not Checked Out
+Modeling,Vectorize,Not Checked Out
+Modeling,Model,Not Checked Out
+Modeling,Predict,Not Checked Out
+Modeling,Score,Not Checked Out
+Deployment,Pickle,Not Checked Out
+Deployment,.py Files,Not Checked Out
+Deployment,MongoDB,Not Checked Out
+Deployment,Templates,Not Checked Out
+Deployment,Flask App,Complete
+Presentation,Outline,Not Checked Out
+Presentation,slides,Checked Out
+Presentation,speech,Not Checked Out
+Presentation,practice,Not Checked Out
