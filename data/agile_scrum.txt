@@ -1,0 +1,6 @@
+Story   Tasks   Check_Out_Date  End_of_Day_Notes
+Data Gathering  Yelp API    8/21/18 Yelp API truncates yelp reviews to 160 char.  Created web scraping py 2.6 Days to run.
+Data Gathering  Storage 8/21/18 Created Dictionary Pickle of Yelp_Reviews for Yelp Reviews.
+Development Flask App   8/21/18 Learned to setup Flask on AWS.
+Data Gathering  Yelp API    8/22/18 Running Review Web scraping.
+Deployment  Flask App   8/22/18 Setup Structure added Navigation Features.
