@@ -18,7 +18,7 @@ except ImportError:
 GRANT_TYPE = 'client_credentials'
 
 
-def load_api_key(filename='yelp_api_key.yaml'):
+def load_api_key(filename='../.gitignore/yelp_api_key.yaml'):
     """Load Yelp API client ID and client secret and return them as a dictionary."""
     with open(filename) as f:
         return yaml.load(f)
@@ -58,4 +58,4 @@ def request(host, path, api_key, url_params=None):
 
     response = requests.request('GET', url, headers=headers, params=url_params)
 
-    return response.json()
+    return response.status_code, response.json()
