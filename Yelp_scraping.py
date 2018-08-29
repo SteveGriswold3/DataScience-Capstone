@@ -119,12 +119,22 @@ class Yelp_Scraper:
             
             stat, Yelp_data = request(API_HOST, SEARCH_PATH, API_KEY, url_params=url_params)
             if stat!=200:
-                print('Not 200 Status Code')
+                print('Not 200 Status Code:', stat)
                 print(Yelp_data)
+                print('sleeping 5 minutes...')
+                time.sleep(300)
+
+                if Yelp_data['error']['code']== 'INTERNAL_ERROR':
+                    print('retry...')
+                    self.scrape_rings(self.rings, self.start_location)
+                else:
+                    stat, Yelp_data = request(API_HOST, SEARCH_PATH, API_KEY, url_params=url_params)
+                    print(stat,'\n',Yelp_data)
+                
                 exit()
 
             print(Yelp_data['region'])
-            time.sleep(5)
+            time.sleep(6)
             for business in Yelp_data['businesses']:
                 self.business_dict[business['id']] = business
         
@@ -148,6 +158,8 @@ class Yelp_Scraper:
         point_count = 0
         ring_max = self.ring + int(rings)
         start_time = datetime.datetime.now()
+        self.start_location = start_location
+        self.rings = rings
 
         for r in range(self.ring, ring_max):
             self.points += 2
