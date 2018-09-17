@@ -139,9 +139,44 @@
           </ol>
 
           <!-- Page Content -->
-          <h1>Business Detail</h1>
-          <hr>
-          <div class="card-body">
+          <div class="card mb-3">
+            <div class="card-header">
+              <i class="fas fa-briefcase"></i>
+              Business Details</div>
+              {% for detail in business_detail %}
+            <div class="card-body">
+              <div class="row">
+                <div class="col-2">
+                    <img src={{ detail.image_url }} width="150" height="150"/>
+                </div>
+                <div class="col-3">
+                  <h3 href={{ detail.url }}>{{ detail.name }}</h3>
+                  <img src='/static/img/yelp_stars/web_and_ios/regular/regular_{{ detail.rating | int }}.png' />
+                  <br>
+                  {{ detail.review_count }} Reviews
+                </div>
+                <div class="col-3">
+                  <a href={{ detail.url }}>
+                    <img src="/static/img/YelpLogo_Trademark/Screen(R)/Yelp_trademark_RGB.png" height="100" />
+                  </a>
+                </div>
+                <div class="col-2">
+                    Price:  {{ detail.price }}
+                    <br>
+                    Latitude:  {{ detail.latitude}}
+                    <br>
+                    Longitude:{{ detail.longitude}}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="card mb-3"></div>
+            <div class="card-header">
+              <i class="fas fa-building"></i>
+              Comparables Business</div>
+            <div class="card-body">
               <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
@@ -149,30 +184,27 @@
                       <th>Name</th>
                       <th>Reviews</th>
                       <th>Rating</th>
+                      <th>Price</th>
                       <th>Latitude</th>
                       <th>Longitude</th>
-                      <th>Price</th>
                     </tr>
                   </thead>
-                  <tfoot>
-                    <tr>
-                      <th>Name</th>
-                      <th>Reviews</th>
-                      <th>Rating</th>
-                      <th>Latitude</th>
-                      <th>Longitude</th>
-                      <th>Price</th>
-                    </tr>
-                  </tfoot>
                   <tbody>
                     {% for bus in businesses %}
                     <tr>
-                      <td>{{ bus.name }}</td>
+                      <td>
+                        <a href={{ bus.url }}>
+                          {{ bus.name }}
+                        </a> 
+                      </td>     
                       <td>{{ bus.review_count }}</td>
-                      <td>{{ bus.rating }}</td>
+                      <td>
+                        <img src="/static/img/yelp_stars/web_and_ios/regular/regular_{{bus.rating | int}}.png" />
+                        
+                      </td>
+                      <td>{{ bus.price }}</td>
                       <td>{{ bus.latitude }}</td>
                       <td>{{ bus.longitude }}</td>
-                      <td>{{ bus.price }}</td>
                     </tr>
                     {% endfor %}
                   </tbody>
